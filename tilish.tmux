@@ -16,7 +16,7 @@
 
 # Check input parameters {{{
 	# Read user options.
-	for opt in default dmenu easymode navigate navigator prefix shiftnum
+	for opt in default dmenu colemak navigate navigator prefix shiftnum
 	do
 		export "$opt"="$(tmux show-option -gv @tilish-"$opt" 2>/dev/null)"
 	done
@@ -28,11 +28,11 @@
 	fi
 
 	# Determine "arrow types".
-	if [ "${easymode:-}" = "on" ]
+	if [ "${colemak:-}" = "on" ]
 	then
 		# Simplified arrows.
-		h='left';   j='down';   k='up';   l='right';
-		H='S-left'; J='S-down'; K='S-up'; L='S-right';
+		h='m'; j='n'; k='e'; l='i';
+		H='M'; J='N'; K='E'; L='I';
 	else
 		# Vim-style arrows.
 		h='h'; j='j'; k='k'; l='l';
@@ -140,7 +140,7 @@ bind_layout "${mod}t" 'tiled'
 bind_layout "${mod}z" 'zoom'
 
 # Refresh the current layout (e.g. after deleting a pane).
-tmux $bind "${mod}r" select-layout -E
+tmux $bind "${mod}R" select-layout -E
 
 # Switch to pane via Alt + hjkl.
 tmux $bind "${mod}${h}" select-pane -L
@@ -207,17 +207,17 @@ then
 	# This assumes that your Vim/Neovim is setup to use Alt + hjkl bindings as well.
 	is_vim="ps -o state= -o comm= -t '#{pane_tty}' | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?)(diff)?$'"
 
-	tmux $bind "${mod}${h}" if-shell "$is_vim" 'send M-h' 'select-pane -L'
-	tmux $bind "${mod}${j}" if-shell "$is_vim" 'send M-j' 'select-pane -D'
-	tmux $bind "${mod}${k}" if-shell "$is_vim" 'send M-k' 'select-pane -U'
-	tmux $bind "${mod}${l}" if-shell "$is_vim" 'send M-l' 'select-pane -R'
+	tmux $bind "${mod}${h}" if-shell "$is_vim" 'send C-h' 'select-pane -L'
+	tmux $bind "${mod}${j}" if-shell "$is_vim" 'send C-j' 'select-pane -D'
+	tmux $bind "${mod}${k}" if-shell "$is_vim" 'send C-k' 'select-pane -U'
+	tmux $bind "${mod}${l}" if-shell "$is_vim" 'send C-l' 'select-pane -R'
 
 	if [ -z "$prefix" ]
 	then
-		tmux bind -T copy-mode-vi "M-$h" select-pane -L
-		tmux bind -T copy-mode-vi "M-$j" select-pane -D
-		tmux bind -T copy-mode-vi "M-$k" select-pane -U
-		tmux bind -T copy-mode-vi "M-$l" select-pane -R
+		tmux bind -T copy-mode-vi "C-$h" select-pane -L
+		tmux bind -T copy-mode-vi "C-$j" select-pane -D
+		tmux bind -T copy-mode-vi "C-$k" select-pane -U
+		tmux bind -T copy-mode-vi "C-$l" select-pane -R
 	fi
 fi
 # }}}
