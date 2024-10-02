@@ -153,7 +153,7 @@ tmux $bind "${mod}${L}" swap-pane -s '{right-of}'
 
 # Open a terminal with Alt + Enter.
 tmux $bind "${mod}enter" \
-	run-shell 'cwd="`tmux display -p \"#{pane_current_path}\"`"; tmux select-pane -t "bottom-right"; tmux split-pane -c "$cwd"'
+	run-shell 'tmux select-pane -t "bottom-right"; tmux split-pane -c "#{pane_current_path}"'
 
 # Name a window with Alt + r.
 tmux $bind "${mod}r" \
